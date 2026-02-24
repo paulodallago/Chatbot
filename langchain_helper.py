@@ -1,10 +1,8 @@
 from typing import TypedDict, Sequence
-
 import os
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_classic.chains.history_aware_retriever import create_history_aware_retriever
 from langchain_classic.chains.retrieval import create_retrieval_chain
-from langchain_community.embeddings import GPT4AllEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -22,7 +20,7 @@ CHROMA_PATH = "chroma"
 GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 embeddings = GoogleGenerativeAIEmbeddings(
-    model="embedding-001"
+    model="gemini-embedding-001"
 )
 
 db = Chroma(persist_directory=CHROMA_PATH,
@@ -30,7 +28,7 @@ db = Chroma(persist_directory=CHROMA_PATH,
 
 retriever = db.as_retriever(search_type="similarity")
 
-llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', google_api_key=GEMINI_API_KEY, temperature=0.2)
+llm = ChatGoogleGenerativeAI(model='gemini-2.5-flash-lite', google_api_key=GEMINI_API_KEY, temperature=0.2)
 
 def contextualize_question():
     question_reformulation_prompt = """
@@ -96,14 +94,9 @@ def call_model(state: State):
     }
 
 def execute_user_query(query_text):
-    print('user query')
-
     config = {"configurable": {"thread_id": "abc123"}}
 
-    result = app.invoke(
-        {"input": query_text},
-        config=config,
-    )
+    result = app.invoke({"input": query_text}, config=config, )
 
     return result["answer"]
 

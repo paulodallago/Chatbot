@@ -9,13 +9,11 @@ from langchain_community.embeddings import GPT4AllEmbeddings
 DATA_PATH = "docs"
 
 def load_documents():
-    "Load PDF documents from a folder."
     loader = DirectoryLoader(DATA_PATH, glob="*.pdf")
     documents = loader.load()
     return documents
 
 def split_text(documents: list[Document]):
-    "Split documents into chunks."
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=300,
         chunk_overlap=100,
@@ -35,7 +33,6 @@ gpt4all_embeddings = GPT4AllEmbeddings(
 )
 
 def save_to_chroma(chunks: list[Document]):
-    "Clear previous db, and save the new db."
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
     else:
@@ -49,7 +46,6 @@ def save_to_chroma(chunks: list[Document]):
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 
 def create_vector_db():
-    "Create vector DB from personal PDF files."
     documents = load_documents()
     doc_chunks = split_text(documents)
     save_to_chroma(doc_chunks)
