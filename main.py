@@ -7,7 +7,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 with st.chat_message("assistant"):
-    st.write("Teste de respostas geradas por IA com base nos documentos do curso.")
+    st.write("Olá! Eu sou o assistente virtual da CC IFSul. Posso ajudar?")
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):

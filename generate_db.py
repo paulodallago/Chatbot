@@ -6,6 +6,8 @@ import shutil
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import GPT4AllEmbeddings
 
+# TODO: Failed to load cuda
+
 DATA_PATH = "docs"
 
 def load_documents():
@@ -38,7 +40,6 @@ def save_to_chroma(chunks: list[Document]):
     else:
         os.mkdir(CHROMA_PATH)
 
-    # create db
     db = Chroma.from_documents(
         chunks, gpt4all_embeddings, persist_directory=CHROMA_PATH
     )
